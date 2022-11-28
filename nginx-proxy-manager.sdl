@@ -32,13 +32,13 @@ profiles:
     npm:
       resources:
         cpu:
-          units: 1
+          units: 2
         memory:
-          size: 1Gi
+          size: 2Gi
         storage:
           - size: 1Gi
           - name: data
-            size: 1Gi
+            size: 10Gi
             attributes:
               persistent: true
               class: beta3
