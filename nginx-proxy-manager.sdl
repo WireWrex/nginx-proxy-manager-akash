@@ -1,0 +1,57 @@
+---
+version: '2.0'
+endpoints:
+ npmep1:
+   kind: ip
+services:
+  npm:
+    image: 'jc21/nginx-proxy-manager:latest'
+    expose:
+      - port: 80
+        as: 80
+        to:
+          - global: true
+            ip: npmep1
+      - port: 443
+        as: 443
+        to:
+          - global: true
+            ip: npmep1
+      - port: 81
+        as: 81
+        to:
+          - global: true
+            ip: npmep1
+    params:
+      storage:
+        data:
+          mount: /data
+          readOnly: false
+profiles:
+  compute:
+    npm:
+      resources:
+        cpu:
+          units: 1
+        memory:
+          size: 1Gi
+        storage:
+          - size: 1Gi
+          - name: data
+            size: 1Gi
+            attributes:
+              persistent: true
+              class: beta3
+  placement:
+    dcloud:
+      attributes:
+      ip-lease: true
+      pricing:
+        npm:
+          denom: uakt
+          amount: 1000
+deployment:
+  npm:
+    dcloud:
+      profile: npm
+      count: 1
